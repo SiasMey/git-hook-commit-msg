@@ -1,4 +1,5 @@
 use std::process::ExitCode;
+use std::fs;
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().collect();
@@ -10,5 +11,9 @@ fn main() -> ExitCode {
     let file_path: &str = &args[1];
 
     println!("File path: {}", file_path);
+
+    let _file_content = fs
+        ::read_to_string(file_path)
+        .expect("Could not read commit message file content");
     ExitCode::SUCCESS
 }
