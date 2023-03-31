@@ -1,0 +1,17 @@
+# https://taskfile.dev
+
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - task -l
+    silent: true
+
+  secret-scan:
+    cmds:
+      - |
+        docker run --rm --mount type=bind,source={{.TASKFILE_DIR | toSlash}},target=/opt/src \
+        zricethezav/gitleaks:latest \
+        detect \
+        --source="/opt/src" \
