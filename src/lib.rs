@@ -9,7 +9,9 @@ mod tests {
     #[test]
     fn test_run() {
         let result = run("Hello World!");
-        assert!(result.is_ok());
-        assert_eq!(result.unwrap(), "Hello World!");
+        match result {
+            Ok(_) => { panic!("Should fail") }
+            Err(error) => { assert_eq!(error, String::from("No commit type provided")) }
+        }
     }
 }
