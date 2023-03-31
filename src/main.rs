@@ -12,8 +12,16 @@ fn main() -> ExitCode {
 
     println!("File path: {}", file_path);
 
-    let _file_content = fs
+    let file_content = fs
         ::read_to_string(file_path)
         .expect("Could not read commit message file content");
-    ExitCode::SUCCESS
+
+    let result = git_hook_commit_msg::run(&file_content);
+    match result {
+        Ok(_) => { ExitCode::SUCCESS }
+        Err(error) => {
+            println!("Error: {}", error);
+            ExitCode::FAILURE
+        }
+    }
 }
