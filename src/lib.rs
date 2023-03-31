@@ -4,6 +4,9 @@ pub fn run(message: &str) -> Result<(), String> {
     if !first_line.contains(':') {
         return Err(String::from("No ':' found in subject line"));
     }
+    if !first_line.contains(": ") {
+        return Err(String::from("No space found after ':' in subject line"));
+    }
     Ok(())
 }
 
@@ -29,6 +32,18 @@ mod tests {
         match result {
             Ok(_) => { panic!("Should fail") }
             Err(error) => { assert_eq!(error, String::from("No ':' found in subject line")) }
+        }
+    }
+
+    #[test]
+    fn test_run_should_check_for_type_subject_seperation() {
+        let input = r#"feat:test"#;
+        let result = run(input);
+        match result {
+            Ok(_) => { panic!("Should fail") }
+            Err(error) => {
+                assert_eq!(error, String::from("No space found after ':' in subject line"))
+            }
         }
     }
 }
