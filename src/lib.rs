@@ -16,11 +16,9 @@ mod tests {
 
     #[test]
     fn test_run_should_check_for_colon() {
-        let result = run("feat test");
-        match result {
-            Ok(_) => { panic!("Should fail") }
-            Err(error) => { assert_eq!(error, String::from("No ':' found in subject line")) }
-        }
+        let input = r#"feat test"#;
+        let result = run(input);
+        assert_eq!(result, Err(String::from("No ':' found in subject line")));
     }
 
     #[test]
@@ -29,21 +27,20 @@ mod tests {
 
         but there is a : in the body"#;
         let result = run(input);
-        match result {
-            Ok(_) => { panic!("Should fail") }
-            Err(error) => { assert_eq!(error, String::from("No ':' found in subject line")) }
-        }
+        assert_eq!(result, Err(String::from("No ':' found in subject line")));
     }
 
     #[test]
     fn test_run_should_check_for_type_subject_seperation() {
         let input = r#"feat:test"#;
         let result = run(input);
-        match result {
-            Ok(_) => { panic!("Should fail") }
-            Err(error) => {
-                assert_eq!(error, String::from("No space found after ':' in subject line"))
-            }
-        }
+        assert_eq!(result, Err(String::from("No space found after ':' in subject line")));
+    }
+
+    #[test]
+    fn test_run_should_check_for_accepted_type_feat() {
+        let input = r#"feat: test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
     }
 }
