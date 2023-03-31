@@ -10,7 +10,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_run_should_check_for_colon_in_first_line() {
+    fn test_run_should_check_for_colon() {
         let result = run("feat test");
         match result {
             Ok(_) => { panic!("Should fail") }
