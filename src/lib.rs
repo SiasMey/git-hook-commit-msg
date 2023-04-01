@@ -19,7 +19,14 @@ pub fn run(message: &str) -> Result<(), String> {
         return Err(String::from("No space found after ':' in subject line"));
     }
 
-    let commit_type = first_line.split(": ").next().unwrap();
+    let commit_type_and_scope = first_line.split(": ").next().unwrap();
+
+    let commit_type = if commit_type_and_scope.contains('(') {
+        commit_type_and_scope.split('(').next().unwrap()
+    } else {
+        commit_type_and_scope
+    };
+
     if COMMIT_TYPES.contains(&commit_type) {
         return Ok(());
     }
@@ -115,5 +122,12 @@ mod tests {
         let input = r#"other: test"#;
         let result = run(input);
         assert_eq!(result, Err(String::from("Commit type 'other' not accepted")));
+    }
+
+    #[test]
+    fn test_run_should_allow_optional_scope() {
+        let input = r#"feat(scope): test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
     }
 }
