@@ -27,7 +27,7 @@ pub fn run(message: &str) -> Result<(), String> {
         commit_type_and_scope
     };
 
-    if COMMIT_TYPES.contains(&commit_type) {
+    if COMMIT_TYPES.contains(&commit_type.trim_end_matches('!')) {
         return Ok(());
     }
 
@@ -127,6 +127,13 @@ mod tests {
     #[test]
     fn test_run_should_allow_optional_scope() {
         let input = r#"feat(scope): test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
+    }
+
+    #[test]
+    fn test_run_should_allow_optional_exclamation_breaking_change() {
+        let input = r#"feat!: test"#;
         let result = run(input);
         assert_eq!(result, Ok(()));
     }
