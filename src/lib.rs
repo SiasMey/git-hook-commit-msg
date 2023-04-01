@@ -60,4 +60,53 @@ mod tests {
         let result = run(input);
         assert_eq!(result, Ok(()));
     }
+
+    #[test]
+    fn test_run_should_check_for_accepted_type_fix() {
+        let input = r#"fix: test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
+    }
+
+    #[test]
+    fn test_run_should_check_for_accepted_type_docs() {
+        let input = r#"docs: test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
+    }
+
+    #[test]
+    fn test_run_should_check_for_accepted_type_style() {
+        let input = r#"style: test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
+    }
+
+    #[test]
+    fn test_run_should_check_for_accepted_type_refactor() {
+        let input = r#"refactor: test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
+    }
+
+    #[test]
+    fn test_run_should_check_for_accepted_type_perf() {
+        let input = r#"perf: test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
+    }
+
+    #[test]
+    fn test_run_should_check_for_accepted_type_test() {
+        let input = r#"test: test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
+    }
+
+    #[test]
+    fn test_run_should_check_for_accepted_type_chore() {
+        let input = r#"chore: test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
+    }
 }
