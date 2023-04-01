@@ -1,3 +1,14 @@
+pub const COMMIT_TYPES: [&str; 8] = [
+    "feat",
+    "fix",
+    "docs",
+    "style",
+    "refactor",
+    "perf",
+    "test",
+    "chore",
+];
+
 pub fn run(message: &str) -> Result<(), String> {
     let first_line = message.lines().next().unwrap();
 
@@ -7,7 +18,13 @@ pub fn run(message: &str) -> Result<(), String> {
     if !first_line.contains(": ") {
         return Err(String::from("No space found after ':' in subject line"));
     }
-    Ok(())
+
+    let commit_type = first_line.split(": ").next().unwrap();
+    if COMMIT_TYPES.contains(&commit_type) {
+        return Ok(());
+    }
+
+    Err(String::from("Fallthrough"))
 }
 
 #[cfg(test)]
