@@ -24,7 +24,7 @@ pub fn run(message: &str) -> Result<(), String> {
         return Ok(());
     }
 
-    Err(String::from("Fallthrough"))
+    Err(format!("Commit type '{}' not accepted", &commit_type))
 }
 
 #[cfg(test)]
@@ -108,5 +108,12 @@ mod tests {
         let input = r#"chore: test"#;
         let result = run(input);
         assert_eq!(result, Ok(()));
+    }
+
+    #[test]
+    fn test_run_should_check_for_fail_unaccepted_type_other() {
+        let input = r#"other: test"#;
+        let result = run(input);
+        assert_eq!(result, Err(String::from("Commit type 'other' not accepted")));
     }
 }
