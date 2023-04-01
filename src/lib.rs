@@ -137,4 +137,11 @@ mod tests {
         let result = run(input);
         assert_eq!(result, Ok(()));
     }
+
+    #[test]
+    fn test_run_should_allow_optional_exclamation_breaking_change_with_scope() {
+        let input = r#"feat(scope)!: test"#;
+        let result = run(input);
+        assert_eq!(result, Ok(()));
+    }
 }
