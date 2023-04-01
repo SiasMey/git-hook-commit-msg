@@ -19,7 +19,12 @@ pub fn run(message: &str) -> Result<(), String> {
         return Err(String::from("No space found after ':' in subject line"));
     }
 
-    let commit_type_and_scope = first_line.split(": ").next().unwrap();
+    let subject: Vec<&str> = first_line.split(": ").collect();
+    if subject[1].is_empty() {
+        return Err(String::from("Empty subject not accepted"));
+    }
+
+    let commit_type_and_scope = subject[0];
 
     let commit_type = if commit_type_and_scope.contains('(') {
         commit_type_and_scope.split('(').next().unwrap()
@@ -143,5 +148,12 @@ mod tests {
         let input = r#"feat(scope)!: test"#;
         let result = run(input);
         assert_eq!(result, Ok(()));
+    }
+
+    #[test]
+    fn test_run_should_deny_empty_subject() {
+        let input = r#"feat: "#;
+        let result = run(input);
+        assert_eq!(result, Err(String::from("Empty subject not accepted")));
     }
 }
