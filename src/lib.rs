@@ -19,12 +19,16 @@ pub fn run(message: &str) -> Result<(), String> {
         return Err(String::from("No space found after ':' in subject line"));
     }
 
-    let subject: Vec<&str> = first_line.split(": ").collect();
-    if subject[1].is_empty() {
-        return Err(String::from("Empty subject not accepted"));
+    if first_line.len() > 50 {
+        return Err(String::from("Title longer than 50 not accepted"));
     }
 
-    let commit_type_and_scope = subject[0];
+    let title: Vec<&str> = first_line.split(": ").collect();
+    if title[1].is_empty() {
+        return Err(String::from("Empty title not accepted"));
+    }
+
+    let commit_type_and_scope = title[0];
 
     let commit_type = if commit_type_and_scope.contains('(') {
         commit_type_and_scope.split('(').next().unwrap()
@@ -151,9 +155,16 @@ mod tests {
     }
 
     #[test]
-    fn test_run_should_deny_empty_subject() {
+    fn test_run_should_deny_empty_title() {
         let input = r#"feat: "#;
         let result = run(input);
-        assert_eq!(result, Err(String::from("Empty subject not accepted")));
+        assert_eq!(result, Err(String::from("Empty title not accepted")));
+    }
+
+    #[test]
+    fn test_run_should_deny_title_longer_than_50() {
+        let input = r#"feat: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa50-aaaaaaaaaaaaaaaa"#;
+        let result = run(input);
+        assert_eq!(result, Err(String::from("Title longer than 50 not accepted")));
     }
 }
